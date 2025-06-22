@@ -1,0 +1,10 @@
+test1.txt: Rất nhỏ, để kiểm tra tính đúng đắn.
+test2.txt: Nhiều lớp nhưng tài nguyên giáo viên dồi dào.
+test3.txt: Xung đột cao về tài nguyên giáo viên (nút thắt cổ chai).
+test4.txt: Xung đột cao về thời gian (các môn học đều rất dài).
+test5.txt: Dữ liệu gốc từ ví dụ của bạn để đối chiếu.
+test6.txt: Kích thước trung bình với các ràng buộc hỗn hợp, mô phỏng một kịch bản thực tế.
+test7.txt: Trường hợp không thể xếp tất cả các lớp, yêu cầu tìm lời giải tối ưu là một tập con.
+test8.txt: Kích thước lớn nhưng cấu trúc "thưa thớt", ít ràng buộc chồng chéo.
+test9.txt: Kích thước lớn và cấu trúc "dày đặc", thử thách giới hạn của các thuật toán.
+test10.txt: Trường hợp đặc biệt với các môn học rất ngắn (1 tiết).
