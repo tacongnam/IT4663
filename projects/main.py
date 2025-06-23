@@ -6,6 +6,7 @@ from greedy import solve_with_greedy
 from branch import solve_with_bnb
 from cp import solve_with_cp
 from ilp import solve_with_ilp
+import gc
 
 def parse_input_file(path: str):
     with open(path, "r", encoding="utf-8") as f:
@@ -63,3 +64,5 @@ if __name__ == "__main__":
 
         # in dạng Markdown (terminal hỗ trợ màu & bảng kẻ, Jupyter cũng OK)
         print(df.to_markdown(index=False))
+
+        gc.collect()
