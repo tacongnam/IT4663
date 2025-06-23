@@ -19,7 +19,7 @@ def solve_with_bnb(T, N, M, class_subjects, teacher_subjects, subject_duration):
     def backtrack(job_index, current_solution, class_sched, teacher_sched):
         global best_solution_bnb
 
-        if time.perf_counter() - start_time > 3600.0:
+        if time.perf_counter() - start_time > 1800.0:
             return
         
         upper_bound = len(current_solution) + (len(jobs) - job_index)
