@@ -1,6 +1,6 @@
 import time
 
-def solve_with_bnb(T, N, M, class_subjects, teacher_subjects, subject_duration):
+def solve_with_bnb(T, N, M, class_subjects, teacher_subjects, subject_duration, MAX_TIME_LIMIT):
     print("--- Solving with Branch and Bound (BnB) ---")
     print("(Note: This can be very slow for non-trivial inputs)")
     
@@ -13,13 +13,17 @@ def solve_with_bnb(T, N, M, class_subjects, teacher_subjects, subject_duration):
 
     global best_solution_bnb
     best_solution_bnb = []
+    MAX_DEPTH = 1500
 
     start_time = time.perf_counter()
     
-    def backtrack(job_index, current_solution, class_sched, teacher_sched):
+    def backtrack(job_index, current_solution, class_sched, teacher_sched, depth = 0):
         global best_solution_bnb
 
-        if time.perf_counter() - start_time > 1800.0:
+        if time.perf_counter() - start_time > MAX_TIME_LIMIT:
+            return
+        
+        if depth > MAX_DEPTH:
             return
         
         upper_bound = len(current_solution) + (len(jobs) - job_index)
@@ -36,7 +40,7 @@ def solve_with_bnb(T, N, M, class_subjects, teacher_subjects, subject_duration):
         duration = subject_duration[j]
 
         # Nhánh 1: Không xếp lịch
-        backtrack(job_index + 1, current_solution, class_sched, teacher_sched)
+        backtrack(job_index + 1, current_solution, class_sched, teacher_sched, depth + 1)
         
         # Nhánh 2..n: Thử xếp lịch
         possible_teachers = [k for k in range(1, T + 1) if j in teacher_subjects.get(k, [])]
@@ -53,7 +57,7 @@ def solve_with_bnb(T, N, M, class_subjects, teacher_subjects, subject_duration):
                     current_solution.append({'class': i, 'subject': j, 'teacher': k, 'start': p})
 
                     # Đệ quy
-                    backtrack(job_index + 1, current_solution, class_sched, teacher_sched)
+                    backtrack(job_index + 1, current_solution, class_sched, teacher_sched, depth + 1)
                     
                     # Hoàn lại
                     current_solution.pop()
@@ -65,4 +69,4 @@ def solve_with_bnb(T, N, M, class_subjects, teacher_subjects, subject_duration):
     initial_teacher_sched = {k: [False] * 61 for k in range(1, T + 1)}
     backtrack(0, [], initial_class_sched, initial_teacher_sched)
     
-    return best_solution_bnb
+    return len(best_solution_bnb)

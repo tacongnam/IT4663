@@ -8,13 +8,15 @@ from cp import solve_with_cp
 from ilp import solve_with_ilp
 import gc
 
+MAX_TIME_LIMIT = 100
+
 def parse_input_file(path: str):
     with open(path, "r", encoding="utf-8") as f:
         raw = f.read().strip()
     return raw
 
 if __name__ == "__main__":
-    for test_id in range(11):
+    for test_id in range(8, 11):
         print(f'Test {test_id}')
         records = []
         example_input = parse_input_file(f'tests/test{test_id}.txt')
@@ -22,13 +24,13 @@ if __name__ == "__main__":
 
         # CP for benchmark
         t0 = time.perf_counter()
-        cp_obj = solve_with_cp(T, N, M, class_subjects, teacher_subjects, subject_duration)
+        cp_obj = solve_with_cp(T, N, M, class_subjects, teacher_subjects, subject_duration, MAX_TIME_LIMIT)
         cp_time = time.perf_counter() - t0
         cp_time = round(cp_time, 6)
         records.append({
             "instance": f'Test {test_id}',
             "method":   "CP",
-            "objective": len(cp_obj),
+            "objective": cp_obj,
             "time":      cp_time,
             "∆obj_vs_CP": 0.0,
             "speedup_vs_CP": 1.0,
@@ -40,15 +42,15 @@ if __name__ == "__main__":
                         ("ILP",    solve_with_ilp),
                         ("BnB",    solve_with_bnb)]:
             t0 = time.perf_counter()
-            obj = fn(T, N, M, class_subjects, teacher_subjects, subject_duration)
+            obj = fn(T, N, M, class_subjects, teacher_subjects, subject_duration, MAX_TIME_LIMIT)
             elapsed = time.perf_counter() - t0
             elapsed = round(elapsed, 6)
             records.append({
                 "instance": f'Test {test_id}',
                 "method":   name,
-                "objective": len(obj),
+                "objective": obj,
                 "time":      elapsed,
-                "∆obj_vs_CP": len(obj) - len(cp_obj),
+                "∆obj_vs_CP": obj - cp_obj,
                 "speedup_vs_CP": cp_time / elapsed if elapsed > 0 else float("inf"),
             })
 

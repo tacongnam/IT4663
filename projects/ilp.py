@@ -1,6 +1,6 @@
 import pulp
 
-def solve_with_ilp(T, N, M, class_subjects, teacher_subjects, subject_duration):
+def solve_with_ilp(T, N, M, class_subjects, teacher_subjects, subject_duration, MAX_TIME_LIMIT):
     print("--- Solving with Integer Linear Programming (ILP) ---")
     model = pulp.LpProblem("School_Timetabling_ILP", pulp.LpMaximize)
     time_slots = range(1, 61)
@@ -38,7 +38,16 @@ def solve_with_ilp(T, N, M, class_subjects, teacher_subjects, subject_duration):
                                for p in range(max(1, q - subject_duration.get(j, 100) + 1), q + 1)
                                if (i, j, k, p) in x) <= 1
 
-    model.solve(pulp.PULP_CBC_CMD(msg=0, timeLimit=1800, options=['-maxNodes', '10000']))
+    model.solve(pulp.PULP_CBC_CMD(
+        msg=1,
+        timeLimit=MAX_TIME_LIMIT,
+        options=[
+            '-maxNodes', '10000',
+            '-ratioGap', '0.05',
+            '-heuristics', 'on',
+            '-preprocess', 'on'
+        ]
+    ))
 
     solution = []
     if model.status == pulp.LpStatusOptimal:
@@ -47,4 +56,4 @@ def solve_with_ilp(T, N, M, class_subjects, teacher_subjects, subject_duration):
                 parts = var.name.split('_')
                 i, j, k, p = map(int, parts[1:])
                 solution.append({'class': i, 'subject': j, 'teacher': k, 'start': p})
-    return solution
+    return len(solution)
