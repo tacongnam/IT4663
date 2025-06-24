@@ -39,7 +39,7 @@ def solve_with_ilp(T, N, M, class_subjects, teacher_subjects, subject_duration, 
                                if (i, j, k, p) in x) <= 1
 
     model.solve(pulp.PULP_CBC_CMD(
-        msg=1,
+        msg=0,
         timeLimit=MAX_TIME_LIMIT,
         options=[
             '-maxNodes', '10000',

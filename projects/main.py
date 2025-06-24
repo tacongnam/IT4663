@@ -8,7 +8,7 @@ from cp import solve_with_cp
 from ilp import solve_with_ilp
 import gc
 
-MAX_TIME_LIMIT = 100
+MAX_TIME_LIMIT = 1800
 
 def parse_input_file(path: str):
     with open(path, "r", encoding="utf-8") as f:
@@ -16,7 +16,7 @@ def parse_input_file(path: str):
     return raw
 
 if __name__ == "__main__":
-    for test_id in range(8, 11):
+    for test_id in range(1, 11):
         print(f'Test {test_id}')
         records = []
         example_input = parse_input_file(f'tests/test{test_id}.txt')
