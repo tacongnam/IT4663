@@ -5,6 +5,7 @@ from io_test import parse_input, print_solution
 from greedy import solve_with_greedy
 from branch import solve_with_bnb
 from cp import solve_with_cp
+from ilp import solve_with_ilp
 import gc
 
 MAX_TIME_LIMIT = 100
@@ -38,6 +39,7 @@ if __name__ == "__main__":
         #print(f'CP - objective: {len(cp_obj)} - time: {cp_time}')
     
         for name, fn in [("Greedy", solve_with_greedy),
+                        ("ILP", solve_with_ilp),
                         ("BnB",    solve_with_bnb)]:
             t0 = time.perf_counter()
             obj = fn(T, N, M, class_subjects, teacher_subjects, subject_duration, MAX_TIME_LIMIT)
