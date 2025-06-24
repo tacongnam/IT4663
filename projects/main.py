@@ -39,7 +39,6 @@ if __name__ == "__main__":
         #print(f'CP - objective: {len(cp_obj)} - time: {cp_time}')
     
         for name, fn in [("Greedy", solve_with_greedy),
-                        ("ILP", solve_with_ilp),
                         ("BnB",    solve_with_bnb)]:
             t0 = time.perf_counter()
             obj = fn(T, N, M, class_subjects, teacher_subjects, subject_duration, MAX_TIME_LIMIT)
