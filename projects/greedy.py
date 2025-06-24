@@ -1,5 +1,5 @@
 # 2.3. Thuật toán Tham lam (Greedy)
-def solve_with_greedy(T, N, M, class_subjects, teacher_subjects, subject_duration):
+def solve_with_greedy(T, N, M, class_subjects, teacher_subjects, subject_duration, MAX_TIME_LIMIT):
     print("--- Solving with Greedy Algorithm ---")
     jobs = []
     for i in range(1, N + 1):
@@ -36,4 +36,4 @@ def solve_with_greedy(T, N, M, class_subjects, teacher_subjects, subject_duratio
                     break
             if is_scheduled:
                 break
-    return solution
+    return len(solution)

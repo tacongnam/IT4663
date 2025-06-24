@@ -1,6 +1,6 @@
 from ortools.sat.python import cp_model
 
-def solve_with_cp(T, N, M, class_subjects, teacher_subjects, subject_duration):
+def solve_with_cp(T, N, M, class_subjects, teacher_subjects, subject_duration, MAX_TIME_LIMIT):
     print("--- Solving with Constraint Programming (CP) ---")
     model = cp_model.CpModel()
     horizon = 60
@@ -40,7 +40,7 @@ def solve_with_cp(T, N, M, class_subjects, teacher_subjects, subject_duration):
     model.Maximize(sum(objective_vars))
 
     solver = cp_model.CpSolver()
-    solver.parameters.max_time_in_seconds = 1800
+    solver.parameters.max_time_in_seconds = MAX_TIME_LIMIT
     status = solver.Solve(model)
 
     solution = []
@@ -49,6 +49,6 @@ def solve_with_cp(T, N, M, class_subjects, teacher_subjects, subject_duration):
             if solver.BooleanValue(task_vars['present']):
                 start_time = solver.Value(task_vars['start'])
                 solution.append({'class': i, 'subject': j, 'teacher': k, 'start': start_time})
-    return solution
+    return len(solution)
 
 
