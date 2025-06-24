@@ -13,7 +13,7 @@ def solve_with_bnb(T, N, M, class_subjects, teacher_subjects, subject_duration, 
 
     global best_solution_bnb
     best_solution_bnb = []
-    MAX_DEPTH = 1500
+    MAX_DEPTH = 500
 
     start_time = time.perf_counter()
     
