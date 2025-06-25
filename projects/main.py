@@ -7,6 +7,7 @@ from branch import solve_with_bnb
 from cp import solve_with_cp
 from ilp import solve_with_ilp
 import gc
+import argparse
 
 MAX_TIME_LIMIT = 1800
 
@@ -15,8 +16,35 @@ def parse_input_file(path: str):
         raw = f.read().strip()
     return raw
 
+parser = argparse.ArgumentParser(description='Input')
+parser.add_argument('--limit', metavar='limit', type=int, dest="limit",
+                    help='MAX_TIME_LIMIT', default=1800)
+parser.add_argument('--tmin', metavar='tmin', type=int, dest="tmin",
+                    help='Start testing from ...', default=0)
+parser.add_argument('--tmax', metavar='tmax', type=int, dest='tmax',
+                    help='to ...', default=10)
+parser.add_argument('--inv', metavar='inv', type=bool, dest='inv',
+                    help='Testing inverse?', default=False)
+parser.add_argument('--algo', metavar='algo', type=str, dest='algo',
+                    help='[c (cp - benchmark) ; g (greedy) ; b (branch and bound) ; i (ilp)]', default='cgbi')
+
+args = parser.parse_args()
+
+algo_mapping = {
+    'g': 'Greedy',
+    'i': 'ILP',
+    'b': 'BnB'
+}
+
 if __name__ == "__main__":
-    for test_id in range(1, 11):
+    inc = 0
+    if args.inv == True:
+        inc = -1
+        args.tmin, args.tmax = args.tmax, args.tmin
+    else:
+        inc = 1
+
+    for test_id in range(args.tmin, args.tmax, inc):
         print(f'Test {test_id}')
         records = []
         example_input = parse_input_file(f'tests/test{test_id}.txt')
@@ -39,7 +67,11 @@ if __name__ == "__main__":
         #print(f'CP - objective: {len(cp_obj)} - time: {cp_time}')
     
         for name, fn in [("Greedy", solve_with_greedy),
+                        ("ILP", solve_with_ilp),
                         ("BnB",    solve_with_bnb)]:
+            if not any(char in algo_mapping and algo_mapping[char] == name for char in args.algo):
+                continue
+                
             t0 = time.perf_counter()
             obj = fn(T, N, M, class_subjects, teacher_subjects, subject_duration, MAX_TIME_LIMIT)
             elapsed = time.perf_counter() - t0
